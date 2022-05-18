@@ -1,11 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { UsersService } from '../users/users.service'
-import * as bcrypt from 'bcrypt'
 import { JwtService } from '@nestjs/jwt'
 import Role from '../users/role.enum'
 import { TokenPayload } from './entity/tokenpayload.entity'
 import { CreateUsersDto } from '../users/dto/create-users.dto'
-
+import * as bcrypt from 'bcryptjs'
 @Injectable()
 export class AuthService {
   constructor(
@@ -14,12 +13,10 @@ export class AuthService {
   ) {}
 
   public async register(registrationData: CreateUsersDto) {
-    const hashedPassword = await bcrypt.hash(registrationData.password, 10)
     try {
       const createdUser = await this.usersService.create({
         ...registrationData,
         role: Role.User,
-        password: hashedPassword,
         balance: 0,
       })
       createdUser.password = undefined

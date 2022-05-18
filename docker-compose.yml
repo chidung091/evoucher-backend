@@ -4,7 +4,7 @@ services:
   elearning-service:
     build:
       context: .
-      dockerfile: packages/elearning-backend/Dockerfile
+      dockerfile: Dockerfile
     container_name: ${BACK_CONTAINER_NAME}
     ports:
       - ${BACK_PORT}:3002

@@ -4,7 +4,7 @@ ENV NODE_ENV production
 
 WORKDIR /home/node
 
-COPY ./packages/elearning-backend/ .
+COPY ./ .
 
 RUN yarn install && yarn run build
 

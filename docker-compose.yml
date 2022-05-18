@@ -1,0 +1,34 @@
+version: "3.7"
+
+services:
+  elearning-service:
+    build:
+      context: .
+      dockerfile: packages/elearning-backend/Dockerfile
+    container_name: ${BACK_CONTAINER_NAME}
+    ports:
+      - ${BACK_PORT}:3002
+    volumes:
+      - service:/payment
+    depends_on:
+      - mongodb
+    networks:
+      - elearning-network
+  mongodb:
+    container_name: ${MONGO_CONTAINER_NAME}
+    image: mongo:4.2
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: $MONGO_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $MONGO_PASSWORD
+    ports:
+      - ${MONGO_PORT}:27017
+    volumes:
+      - db-data-order:/data/db
+    networks:
+      - elearning-network
+volumes:
+  db-data-order:
+  service:
+networks:
+  elearning-network:
+    name: ${NETWORK_NAME}

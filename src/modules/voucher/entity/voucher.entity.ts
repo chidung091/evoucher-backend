@@ -37,6 +37,7 @@ export class Vouchers {
   })
   status: boolean
 }
+
 export const VouchersSchema = SchemaFactory.createForClass(Vouchers)
 
 export interface VouchersDocument extends Vouchers, Document {}

@@ -36,7 +36,7 @@ export class VoucherService {
     })
   }
   public async getVoucherCount(email: string) {
-    return this.vouchersModel.aggregate([
+    const data = await this.vouchersModel.aggregate([
       { $match: { ownerEmail: email } },
       {
         $group: {
@@ -48,5 +48,17 @@ export class VoucherService {
         },
       },
     ])
+    const dataRes = []
+    await Promise.all(
+      data.map((single) => {
+        const dataResponse = {
+          name: single._id.name,
+          price: single._id.price,
+          count: single.count,
+        }
+        dataRes.push(dataResponse)
+      }),
+    )
+    return dataRes
   }
 }

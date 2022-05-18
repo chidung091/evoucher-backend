@@ -4,8 +4,6 @@ import { DATABASE_URI, ENV } from './config/secrets'
 import { MongooseModule } from '@nestjs/mongoose'
 import { AuthModule } from './modules/auth/auth.module'
 import { UsersModule } from './modules/users/users.module'
-import { QuestionModule } from './modules/question/question.module'
-import { TestModule } from './modules/test/test.module'
 
 @Module({
   imports: [
@@ -15,8 +13,6 @@ import { TestModule } from './modules/test/test.module'
     MongooseModule.forRoot(DATABASE_URI),
     AuthModule,
     UsersModule,
-    QuestionModule,
-    TestModule,
   ],
   controllers: [],
   providers: [],

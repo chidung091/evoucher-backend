@@ -9,9 +9,10 @@ import {
   ApiTags,
 } from '@nestjs/swagger'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
-import RoleGuard from '../auth/role.guard'
 import Role from './role.enum'
 import { BalanceDto } from './dto/balance.dto'
+import { RoleGuard } from '../auth/role.guard'
+import { Roles } from 'src/decorators'
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -43,8 +44,8 @@ export class UsersController {
     return await this.usersService.topUpBalance(req.user.email, balance.balance)
   }
 
-  @UseGuards(RoleGuard(Role.Admin))
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles(Role.Admin)
   @Get()
   async getAllUsers() {
     return await this.usersService.getAll()

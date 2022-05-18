@@ -1,15 +1,16 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiPropertyOptional } from '@nestjs/swagger'
 
-export class ErrorMessageDTO {
-  @ApiProperty({ description: 'Nội dung lỗi' })
-  readonly message: string
-  @ApiProperty({ description: 'Chi tiết lỗi' })
-  readonly detail: any
-}
+export class ErrorResponse {
+  @ApiPropertyOptional({ type: Number })
+  readonly status?: any
 
-export class ErrorResponseDTO {
-  @ApiProperty({ description: 'Thông tin lỗi' })
-  error: ErrorMessageDTO
-  @ApiProperty({ description: 'Mã lỗi HTTP' })
-  statusCode: number
+  @ApiPropertyOptional({
+    type: String,
+    example: 'Error message',
+    default: 'Internal Server Error',
+  })
+  readonly message?: any
+
+  @ApiPropertyOptional({ type: String, example: 'Error' })
+  readonly name?: any
 }

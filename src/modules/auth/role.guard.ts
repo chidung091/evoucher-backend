@@ -1,29 +1,36 @@
-import Role from '../users/role.enum'
 import {
   CanActivate,
   ExecutionContext,
-  Inject,
-  mixin,
-  Type,
+  ForbiddenException,
+  Injectable,
 } from '@nestjs/common'
-import RequestWithUser from './dto/requestWithUser.dto'
-import { UsersService } from '../users/users.service'
+import { Reflector } from '@nestjs/core'
+import { isEmpty } from 'lodash'
+import { Observable } from 'rxjs'
+import { ROLES_KEY } from 'src/decorators/roles.decorator'
+import Role from '../users/role.enum'
 
-const RoleGuard = (role: Role): Type<CanActivate> => {
-  class RoleGuardMixin implements CanActivate {
-    constructor(@Inject(UsersService) private usersService: UsersService) {}
+@Injectable()
+export class RoleGuard implements CanActivate {
+  constructor(private reflector: Reflector) {}
 
-    async canActivate(context: ExecutionContext) {
-      const request = context.switchToHttp().getRequest<RequestWithUser>()
-      const user = {
-        ...request.user,
-        role: await this.usersService.getRole(request.user.email),
-      }
-      return user?.role.includes(role)
+  canActivate(
+    context: ExecutionContext,
+  ): boolean | Promise<boolean> | Observable<boolean> {
+    const targets = [context.getHandler(), context.getClass()]
+    const requiredRoles = this.reflector.getAllAndOverride<Role[]>(
+      ROLES_KEY,
+      targets,
+    )
+    if (!requiredRoles || isEmpty(requiredRoles)) {
+      return true
     }
+
+    const request = context.switchToHttp().getRequest()
+    if (!requiredRoles.includes(request.user.role)) {
+      throw new ForbiddenException()
+    }
+
+    return true
   }
-
-  return mixin(RoleGuardMixin)
 }
-
-export default RoleGuard

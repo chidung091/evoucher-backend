@@ -16,9 +16,4 @@ export class CreateVouchersDto {
   @IsString()
   @IsNotEmpty()
   voucherPrice: string
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  ownerEmail: string
 }

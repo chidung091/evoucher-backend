@@ -25,8 +25,8 @@ export class VoucherController {
   @Roles(Role.User)
   @ApiOperation({ summary: 'Create new vouchers' })
   @ApiResponse({ status: 201, description: 'Success', type: VouchersResponse })
-  async createOrder(@Body() vouchersDto: CreateVouchersDto) {
-    return await this.vouchersService.createVoucher(vouchersDto)
+  async createOrder(@Req() req, @Body() vouchersDto: CreateVouchersDto) {
+    return await this.vouchersService.createVoucher(req.user.email, vouchersDto)
   }
 
   @Get()
@@ -36,7 +36,8 @@ export class VoucherController {
   async getVoucherByUser(@Req() req) {
     return this.vouchersService.getVoucherCount(req.user.email)
   }
-  @Get('detail')
+
+  @Post('detail')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles(Role.User)
   @ApiOperation({ summary: 'Get all vouchers' })

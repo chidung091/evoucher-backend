@@ -16,9 +16,13 @@ export class VoucherService {
     private readonly vouchersRepository: VouchersRepository,
   ) {}
 
-  async createVoucher(dto: CreateVouchersDto): Promise<VouchersDocument> {
+  async createVoucher(
+    email: string,
+    dto: CreateVouchersDto,
+  ): Promise<VouchersDocument> {
     return this.vouchersRepository.create({
       ...dto,
+      ownerEmail: email,
       status: false,
     })
   }

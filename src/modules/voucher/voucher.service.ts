@@ -66,11 +66,13 @@ export class VoucherService {
     return dataRes
   }
   public async markUsed(id: string) {
-    const findId = await this.vouchersRepository.getById({ id })
+    const findId = await this.vouchersRepository.getOne({
+      conditions: { voucherId: id },
+    })
     if (!findId) {
       throw new BadRequestException('ID not found')
     }
     findId.status = true
-    return this.vouchersRepository.deleteById(id)
+    return this.vouchersRepository.deleteById(findId.id)
   }
 }

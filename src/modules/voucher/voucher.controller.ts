@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common'
 import {
   ApiTags,
   ApiBearerAuth,
@@ -47,5 +56,12 @@ export class VoucherController {
       dto.voucherName,
       dto.voucherPrice,
     )
+  }
+  @Delete(':id/delete')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles(Role.User)
+  @ApiOperation({ summary: 'Get all vouchers' })
+  async deleteVoucher(@Req() req, @Param('id') id: string) {
+    return this.vouchersService.markUsed(id)
   }
 }

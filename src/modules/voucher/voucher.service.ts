@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { CreateVouchersDto } from './dto/create-vouchers.dto'
@@ -64,5 +64,13 @@ export class VoucherService {
       }),
     )
     return dataRes
+  }
+  public async markUsed(id: string) {
+    const findId = await this.vouchersRepository.getById({ id })
+    if (!findId) {
+      throw new BadRequestException('ID not found')
+    }
+    findId.status = true
+    return this.vouchersRepository.deleteById(id)
   }
 }

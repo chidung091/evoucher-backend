@@ -31,11 +31,6 @@ export class Vouchers {
     required: true,
   })
   ownerEmail: string
-
-  @Prop({
-    required: true,
-  })
-  status: boolean
 }
 
 export const VouchersSchema = SchemaFactory.createForClass(Vouchers)

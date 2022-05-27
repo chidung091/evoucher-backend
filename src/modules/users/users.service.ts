@@ -34,6 +34,18 @@ export class UsersService {
       HttpStatus.NOT_FOUND,
     )
   }
+  public async getName(email: string) {
+    const user = await this.usersRepository.getOne({
+      conditions: { email: email },
+    })
+    if (user) {
+      return user.name
+    }
+    throw new HttpException(
+      'User with this email does not exist',
+      HttpStatus.NOT_FOUND,
+    )
+  }
 
   public async checkBalance(email: string) {
     const user = await this.usersRepository.getOne({

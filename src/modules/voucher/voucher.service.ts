@@ -2,11 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { CreateVouchersDto } from './dto/create-vouchers.dto'
-import {
-  Vouchers,
-  VouchersDocument,
-  VOUCHERS_DB,
-} from './entity/voucher.entity'
+import { VouchersDocument, VOUCHERS_DB } from './entity/voucher.entity'
 import { VouchersRepository } from './repository/voucher.repository'
 
 @Injectable()
@@ -23,13 +19,13 @@ export class VoucherService {
     return this.vouchersRepository.create({
       ...dto,
       ownerEmail: email,
-      status: false,
     })
   }
 
   public async getAll(): Promise<VouchersDocument[]> {
     return this.vouchersRepository.getAll()
   }
+
   public async getVoucherByOwnerAndType(
     email: string,
     name: string,
@@ -39,6 +35,7 @@ export class VoucherService {
       conditions: { ownerEmail: email, voucherName: name, voucherPrice: price },
     })
   }
+
   public async getVoucherCount(email: string) {
     const data = await this.vouchersModel.aggregate([
       { $match: { ownerEmail: email } },
@@ -65,6 +62,7 @@ export class VoucherService {
     )
     return dataRes
   }
+
   public async markUsed(id: string) {
     const findId = await this.vouchersRepository.getOne({
       conditions: { voucherId: id },
@@ -72,7 +70,6 @@ export class VoucherService {
     if (!findId) {
       throw new BadRequestException('ID not found')
     }
-    findId.status = true
     return this.vouchersRepository.deleteById(findId.id)
   }
 }

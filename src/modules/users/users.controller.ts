@@ -36,6 +36,14 @@ export class UsersController {
     return await this.usersService.checkBalance(req.user.email)
   }
 
+  @Get('/name')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'get users balance' })
+  @ApiResponse({ status: 200, description: 'Success', type: UsersDto })
+  async getName(@Req() req) {
+    return await this.usersService.getName(req.user.email)
+  }
+
   @Post('/balance')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'top up users balance' })

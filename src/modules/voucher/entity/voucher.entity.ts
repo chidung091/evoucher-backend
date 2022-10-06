@@ -31,6 +31,21 @@ export class Vouchers {
     required: true,
   })
   ownerEmail: string
+
+  @Prop({
+    required: true,
+  })
+  voucherOutputDate: Date
+
+  @Prop({
+    required: true,
+  })
+  voucherExpiryDate: Date
+
+  @Prop({
+    required: true,
+  })
+  hotline: string
 }
 
 export const VouchersSchema = SchemaFactory.createForClass(Vouchers)

@@ -16,9 +16,14 @@ export class VoucherService {
     email: string,
     dto: CreateVouchersDto,
   ): Promise<VouchersDocument> {
+    const date = this.addMonths(3)
+    const outputDate = this.removeMonths(3)
     return this.vouchersRepository.create({
       ...dto,
       ownerEmail: email,
+      voucherExpiryDate: date,
+      voucherOutputDate: outputDate,
+      hotline: '1900 299 232',
     })
   }
 
@@ -71,5 +76,17 @@ export class VoucherService {
       throw new BadRequestException('ID not found')
     }
     return this.vouchersRepository.deleteById(findId.id)
+  }
+
+  public addMonths(numOfMonths: number) {
+    const date = new Date()
+    date.setMonth(date.getMonth() + numOfMonths)
+    return date
+  }
+
+  public removeMonths(numOfMonths: number) {
+    const date = new Date()
+    date.setMonth(date.getMonth() - numOfMonths)
+    return date
   }
 }

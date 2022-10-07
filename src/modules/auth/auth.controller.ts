@@ -28,7 +28,7 @@ import { JwtAuthGuard } from './jwt-auth.guard'
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('/register')
+  @Post('/registers')
   @ApiOperation({ summary: 'Create new users' })
   @ApiResponse({ status: 201, description: 'Success', type: UsersDto })
   async registerUser(@Body() usersDTO: CreateUsersDto) {

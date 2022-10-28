@@ -9,7 +9,7 @@ describe('VoucherService', () => {
       providers: [VoucherService],
     }).compile();
 
-    service = module.get<VoucherService>(VoucherService);
+    service = module.get<VoucherService>(VoucherService)
   });
 
   it('should be defined', () => {
